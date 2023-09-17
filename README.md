@@ -4,22 +4,28 @@ Predicate detection project is outlined at a very high level in Parallel_Algorit
 ## QEMU installation and some quicklinks
 Note: This was tested on a ubuntu 23.04 lunar release
 
-'''bat
+```
+
 sudo apt update -y && sudo apt upgrade -y
 sudo apt install qemu-user qemu-user-static gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu binutils-aarch64-linux-gnu-dbg build-essential
-'''
+
+```
 
 copy and pasted the above commands shamelessly from
 
-'''
+```
+
 https://azeria-labs.com/arm-on-x86-qemu-user/
-'''
+
+```
 
 for more detailed information on QEMU and GDB this seems like a good starting point
 
-'''
+```
+
 https://en.wikibooks.org/wiki/QEMU/Debugging_with_QEMU
-'''
+
+```
 
 # Taskings and What needs to be done (high level)
 
