@@ -96,4 +96,36 @@ int main() {
 ```
 above is a unit test for seeing when LR is overwritten. more or less pseudocode.
 
+## Java instead of all the C and C++ jargon
+Just realized that Java has Java Parallel Streams that may make it easier to hook into programs to analyze and introspect?
+
+```
+src: https://www.baeldung.com/java-when-to-use-parallel-stream
+```
+
+The above source is good for doing operations.  But what about hooking into another program?
+
+so diving down into the internet fount this link
+
+```
+https://java-native-access.github.io/jna/5.13.0/javadoc/overview-summary.html#overview_description
+```
+which was nested in a stack overflow post
+
+```
+https://github.com/java-native-access/jna
+https://stackoverflow.com/questions/917789/java-native-interface-with-any-arbitrary-c-code
+```
+
+So maybe we can hook c programs into java through the Java Native Access (JNA) although the build is failing? at the moment we'll have to find a version that works? or use the java version that allows us to use parallel streams and hook into different sections of code to...emulate the program..through Java (ewww). However, I think if we are able to do this we can at least gain some introspection from a low level program such as C and use Java's high level libraries to make it easier to step through a programs Global State for each Thread/Processor, which makes it a little more theoretically designed with a higher degree of confidence of project completion.  QEMU and Docker I think would be pretty hard.  but this paried with the homework assignment (Homework 3) I think it's more doable now.
+
+# Design Choices
+
+## Qemu
+
+## Docker
+
+## Java JNA and Parallel Streams
+This may be the best option since we need to generalize loading a program and executing lines of code (or instructions) and stepping through each processes in parallel according to an  Linear Lattice Predicte (LLP) path search mixed with a predicate detection algorithm.
+
 
