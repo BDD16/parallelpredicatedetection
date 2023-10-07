@@ -128,4 +128,9 @@ So maybe we can hook c programs into java through the Java Native Access (JNA) a
 ## Java JNA and Parallel Streams
 This may be the best option since we need to generalize loading a program and executing lines of code (or instructions) and stepping through each processes in parallel according to an  Linear Lattice Predicte (LLP) path search mixed with a predicate detection algorithm.
 
+To run the maven project from the my-app directory, granted you have maven installed
+
+```
+mvn package exec:java -Dexec.mainClass=com.utece.student.llpdetection.App
+```
 
