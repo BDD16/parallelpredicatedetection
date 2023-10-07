@@ -134,3 +134,16 @@ To run the maven project from the my-app directory, granted you have maven insta
 mvn package exec:java -Dexec.mainClass=com.utece.student.llpdetection.App
 ```
 
+## Trampolines
+Trampolines are usually invoked before or after a basic block to dump context information.  I in order for our project
+to be successful we will need to implement a way to add a trampoline in code provided with source.  starting with Java 
+source as I think that will be the easiest. If we get a quick win we may go onto adding a trampoline to C++ source programs.
+
+The C++ source programs will allow to just pull something of github and run the LLP algorithm wrapped with trampolines 
+in the native language and invoked in java through something like JNA, detecting when to pause execution of a thread or 
+to continue on.
+
+```
+https://stackoverflow.com/questions/189725/what-is-a-trampoline-function
+```
+
