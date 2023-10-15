@@ -1,16 +1,8 @@
 package com.utece.student.llpdetection;
 
-import com.sun.jna.Native;
-import com.sun.jna.Platform;
 import com.utece.student.llpdetection.instrumentation.CLibrary;
 import com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegisterWrapper;
 import com.utece.student.llpdetection.instrumentation.structures.context_t;
-import com.sun.jna.StructureReadContext;
-
-/** Simple example of JNA interface mapping and usage. with a trampoline */
-
-import java.lang.String;
-import com.sun.jna.Library;
 class trampoline_thievery<T> {
     public T get() { return null; }
 
