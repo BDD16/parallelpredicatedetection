@@ -1,10 +1,9 @@
 package com.utece.student.llpdetection;
 
-import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
-import com.utece.student.llpdetection.instrumentation.Sysinfo;
 import com.utece.student.llpdetection.instrumentation.CLibrary;
+import com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegisterWrapper;
 import com.utece.student.llpdetection.instrumentation.structures.context_t;
 import com.sun.jna.StructureReadContext;
 
@@ -40,7 +39,7 @@ public class App {
     public static void main(String[] args) {
         context_t context = new context_t();
         //StructureReadContext printThis = new StructureReadContext(context);
-        trampoline_thievery x = new trampoline_thievery<>(){
+        trampoline_thievery<Object> x = new trampoline_thievery<>(){
             @java.lang.Override
             public java.lang.Object get() {
                return super.get();
@@ -49,11 +48,14 @@ public class App {
             @java.lang.Override
             public trampoline_thievery<java.lang.Object> run(){
                 CLibrary.INSTANCE.getcontext(context);
-                CLibrary.INSTANCE.printf("Hello, World %s\n",context );
+                NativeAssemblyRegisterWrapper.printAllRegisters();
+                CLibrary.INSTANCE.printf("Hello, World %32x\n",context.mcontext_ptr );
+                NativeAssemblyRegisterWrapper.printAllRegisters();
                 return this;
             }
         };
         for (int i=0;i < args.length;i++) {
+            int j = 0;
             //x.execute();
             //return new trampoline_thievery<CLibrary>(){public CLibrary.INSTANCE.printf("Argument %d: %s\n", i, args[i]);
         }
