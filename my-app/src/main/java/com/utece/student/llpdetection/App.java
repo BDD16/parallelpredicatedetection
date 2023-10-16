@@ -29,6 +29,7 @@ public class App {
     // customization and mapping of Java to native types.
 
     public static void main(String[] args) {
+        int window = 0x4242;
         context_t context = new context_t();
         //StructureReadContext printThis = new StructureReadContext(context);
         trampoline_thievery<Object> x = new trampoline_thievery<>(){
@@ -40,9 +41,14 @@ public class App {
             @java.lang.Override
             public trampoline_thievery<java.lang.Object> run(){
                 CLibrary.INSTANCE.getcontext(context);
-                NativeAssemblyRegisterWrapper.printAllRegisters();
-                CLibrary.INSTANCE.printf("Hello, World %32x\n",context.mcontext_ptr );
-                NativeAssemblyRegisterWrapper.printAllRegisters();
+                NativeAssemblyRegisterWrapper.instance.print_rax();
+                NativeAssemblyRegisterWrapper.instance.print_rbx();
+                NativeAssemblyRegisterWrapper.instance.print_rcx();
+                NativeAssemblyRegisterWrapper.instance.print_rdx();
+
+                CLibrary.INSTANCE.printf("Hello, World %d\n", window);
+                NativeAssemblyRegisterWrapper.instance.print_rax();
+                //NativeAssemblyRegisterWrapper.printAllRegisters();
                 return this;
             }
         };

@@ -38,10 +38,10 @@
       </dependency>
 
     <dependency>
-      <groupId>com.utece.student.llpdetection.instrumentation.inlineassembly.libassembly</groupId>
+      <groupId>com.utece.student.llpdetection.instrumentation.inlineassembly</groupId>
       <artifactId>libassembly</artifactId>
-      <type>dylib</type>
       <version>1.0</version>
+      <type>dylib</type>
     </dependency>
 
 
