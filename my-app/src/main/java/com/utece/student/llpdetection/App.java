@@ -3,6 +3,9 @@ package com.utece.student.llpdetection;
 import com.utece.student.llpdetection.instrumentation.CLibrary;
 import com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegisterWrapper;
 import com.utece.student.llpdetection.instrumentation.structures.context_t;
+
+import java.lang.annotation.Native;
+
 class trampoline_thievery<T> {
     public T get() { return null; }
 
@@ -30,6 +33,7 @@ public class App {
 
     public static void main(String[] args) {
         int window = 0x4242;
+
         context_t context = new context_t();
         //StructureReadContext printThis = new StructureReadContext(context);
         trampoline_thievery<Object> x = new trampoline_thievery<>(){
@@ -40,14 +44,24 @@ public class App {
 
             @java.lang.Override
             public trampoline_thievery<java.lang.Object> run(){
+                int rip;
+                long rax;
+                long rbx;
+                long rcx;
+                long rdx;
                 CLibrary.INSTANCE.getcontext(context);
-                NativeAssemblyRegisterWrapper.instance.print_rax();
-                NativeAssemblyRegisterWrapper.instance.print_rbx();
-                NativeAssemblyRegisterWrapper.instance.print_rcx();
-                NativeAssemblyRegisterWrapper.instance.print_rdx();
+                rax = NativeAssemblyRegisterWrapper.instance.print_rax();
+                rbx = NativeAssemblyRegisterWrapper.instance.print_rbx();
+                rcx = NativeAssemblyRegisterWrapper.instance.print_rcx();
+                rdx = NativeAssemblyRegisterWrapper.instance.print_rdx();
+                rip = NativeAssemblyRegisterWrapper.instance.print_eip();
 
-                CLibrary.INSTANCE.printf("Hello, World %d\n", window);
-                NativeAssemblyRegisterWrapper.instance.print_rax();
+                CLibrary.INSTANCE.printf("RIP %08x\n", rip);
+                CLibrary.INSTANCE.printf("RAX %08x\n", rax);
+                CLibrary.INSTANCE.printf("RBX %08x\n", rbx);
+                CLibrary.INSTANCE.printf("RCX %08x\n", rcx);
+                CLibrary.INSTANCE.printf("RDX %08x\n", rdx);
+                //NativeAssemblyRegisterWrapper.instance.print_rax();
                 //NativeAssemblyRegisterWrapper.printAllRegisters();
                 return this;
             }

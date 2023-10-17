@@ -1,37 +1,42 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "NativeAssembly.h"
+#include "com_utece_student_llpdetection_instrumentation_inlineassembly_NativeAssembly.h"
 
-void print_eip(void){
-    unsigned int esp;
-    printf("about to print eip");
-	asm volatile("movl $0x30, %%eax; movl %%eax, %%esp" : "=r" (esp));
-	printf("Value in RIP: %08x\n", esp);
+int print_eip(void){
+//    unsigned int esp;
+//    printf("about to print eip");
+//	asm volatile("movl $0x30, %%eax; movl %%eax, %0" : "=r" (esp));
+//	return esp;
+    unsigned long long rip_value;
+
+    // Inline assembly to read the RIP register
+    asm("movq (%%rip), %0" : "=r" (rip_value));
+    return (int)rip_value;
 }
 
-void print_rax(void){
+long long print_rax(void){
 	long long value;
 
     asm volatile("movq %%rax, %0" : "=r" (value));
-	printf("Value in RAX: %lld\n", value);
+	return value;
 }
 
-void print_rbx(void){
+long long print_rbx(void){
 	long long value;
     asm volatile("movq %%rbx, %0" : "=r" (value));
-	printf("Value in RBX: %lld\n", value);
+	return value;
 }
 
-void print_rcx(void){
+long long print_rcx(void){
 	long long value;
     asm volatile("movq %%rcx, %0" : "=r" (value));
-	printf("Value in RCX: %lld\n", value);
+	return value;
 }
 
-void print_rdx(void){
+long long print_rdx(void){
 	long long value;
     asm volatile("movq %%rdx, %0" : "=r" (value));
-	printf("Value in RDX: %lld\n", value);
+	return value;
 }
 
 JNIEXPORT void JNICALL Java_NativeAssembly_print_eip(JNIEnv *env, jobject obj) {
