@@ -44,6 +44,13 @@
       <type>dylib</type>
     </dependency>
 
+    <dependency>
+      <groupId>com.utece.student.llpdetection.instrumentation.inlineassembly</groupId>
+      <artifactId>libassembly64</artifactId>
+      <version>1.0</version>
+      <type>dylib</type>
+    </dependency>
+
 
   </dependencies>
 
