@@ -34,6 +34,7 @@ public class InstrumentBinary {
                 long rbx;
                 long rcx;
                 long rdx;
+                rip =  com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegister64Wrapper.instance.print_eip();
                 com.utece.student.llpdetection.instrumentation.CLibrary.INSTANCE.getcontext(context);
                 rax = com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegister64Wrapper.instance.print_rax();
                 rbx = com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegister64Wrapper.instance.print_rbx();
@@ -55,15 +56,32 @@ public class InstrumentBinary {
             }
         };
         instrumentThis.run();
+
         System.out.println("Let's attempt to print {context}: ");
         instrumentThis.run();
         System.out.println(context);
         System.out.println("Done Printing Context");
         instrumentThis.run();
+        System.out.println(instrumentThis.toString());
+        customFunction();
+        int x = 2;
+        customFunction();
+        int y = 1;
+        customFunction();
     }
 
     public void invoke() {
         instrumentThis.run();
+    }
+
+    public void customFunction(){
+        final long rip2 = com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegister64Wrapper.instance.print_eip();
+        int x = 2 +1;
+        x = 54;
+        System.out.println(Long.toHexString(rip2));
+        final long rip3 = com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegister64Wrapper.instance.print_eip();
+        System.out.println(Long.toHexString(rip3));
+        return;
     }
 
 }

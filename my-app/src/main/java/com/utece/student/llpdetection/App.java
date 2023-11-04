@@ -63,7 +63,8 @@ public class App {
 //        x.run();
         InstrumentBinary binary_trampoline = new InstrumentBinary();
         binary_trampoline.invoke(); // after a function turn into a decorator for each function or basic block
-
+        binary_trampoline.customFunction();
+        binary_trampoline.customFunction();
     }
 }
 

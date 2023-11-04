@@ -39,8 +39,8 @@
 
     <dependency>
       <groupId>com.utece.student.llpdetection.instrumentation.inlineassembly</groupId>
-      <artifactId>libassembly</artifactId>
-      <version>1.0</version>
+      <artifactId>libassembly64</artifactId>
+      <version>1.1</version>
       <type>dylib</type>
     </dependency>
 
