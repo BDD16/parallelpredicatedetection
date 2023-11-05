@@ -3,6 +3,8 @@
 #include "NativeAssembly_64.h"
 
 long print_eip(void){
+// input lr_stack_frame is starting at 0 to whatever is the callee stack frame 0 is current stack frame
+// 1 is the callee stack frame, etc.
 //    unsigned int esp;
 //    printf("about to print eip");
 //	asm volatile("movl $0x30, %%eax; movl %%eax, %0" : "=r" (esp));
@@ -10,8 +12,24 @@ long print_eip(void){
     long result;
 
     // Inline assembly to read the RIP register
-    // asm volatile("pushq %%r12; popq %0" : "=r" (result));
-    result = ((long)__builtin_extract_return_addr (__builtin_return_address(1)));
+     asm volatile("pushq (%%rip); popq %0" : "=r" (result));
+    //result = ((long)__builtin_extract_return_addr (__builtin_return_address(lr_stack_frame)));
+    return result;
+}
+
+long print_lr_at_callee(int callee){
+    long result;
+
+    if(callee == 0){
+        result = ((long)__builtin_extract_return_addr (__builtin_return_address(0)));
+    }
+    else if(callee == 1){
+        result = ((long)__builtin_extract_return_addr (__builtin_return_address(1)));
+    }
+    else if(callee == 2){
+        result = ((long)__builtin_extract_return_addr (__builtin_return_address(2)));
+    }
+
     return result;
 }
 

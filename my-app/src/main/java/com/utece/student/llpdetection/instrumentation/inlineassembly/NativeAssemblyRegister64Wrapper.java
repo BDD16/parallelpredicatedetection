@@ -11,6 +11,7 @@ public interface NativeAssemblyRegister64Wrapper extends Library{
 
 
     public long print_eip();
+    public long print_lr_at_callee(int callee);
     public long print_rax();
     public long print_rbx();
     public long print_rcx();

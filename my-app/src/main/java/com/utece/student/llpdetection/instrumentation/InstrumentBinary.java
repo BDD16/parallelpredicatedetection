@@ -74,6 +74,10 @@ public class InstrumentBinary {
         instrumentThis.run();
     }
 
+    public long getLrAtSpecified(int specified){
+        return com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegister64Wrapper.instance.print_lr_at_callee(specified);
+    }
+
     public void customFunction(){
         final long rip2 = com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegister64Wrapper.instance.print_eip();
         int x = 2 +1;

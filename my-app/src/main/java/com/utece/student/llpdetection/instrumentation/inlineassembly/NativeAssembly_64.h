@@ -17,6 +17,14 @@ JNIEXPORT jlong JNICALL Java_NativeAssembly_164_print_1eip
 
 /*
  * Class:     NativeAssembly_64
+ * Method:    print_lr_at_callee
+ * Signature: (I)J
+ */
+JNIEXPORT jlong JNICALL Java_NativeAssembly_164_print_1lr_1at_1callee
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     NativeAssembly_64
  * Method:    print_rax
  * Signature: ()J
  */
