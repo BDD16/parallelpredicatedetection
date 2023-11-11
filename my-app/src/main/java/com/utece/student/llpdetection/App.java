@@ -1,12 +1,61 @@
 package com.utece.student.llpdetection;
 
-import com.utece.studnet.llpdetection.instrumentation.InstrumentBinary;
+import com.utece.student.llpdetection.instrumentation.InstrumentBinary;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class App {
+    public App(){
+    }
+
+    public static void run(String[] args){
+        LinkedList<Integer> local_overwrite = new LinkedList<Integer>(Collections.singleton(3));
+        InstrumentBinary binary_trampoline = new InstrumentBinary();
+        try{
+            int i = 0;
+            try {
+                while (i < 10) {
+                    try {
+                        binary_trampoline.customFunction();
+                        AtomicInteger j = new AtomicInteger(3);
+                        local_overwrite.parallelStream().forEach(number -> {
+                            System.out.println("{callee or RIP at this point before write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
+                            System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
+                            try {
+                                local_overwrite.set(j.get(), number);
+                            }catch(Exception e){
+                                System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
+                            }
+                            System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
+                            j.getAndIncrement();
+                        });
+                        System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
+                        System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
+                        binary_trampoline.customFunction();
+                    }catch(Exception e){
+                        System.out.println(i);
+                        System.out.println("{callee of 1: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
+                        System.out.println("{callee of 0: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
+                        //System.out.println("{callee of 2: " + Long.toHexString(binary_trampoline.getLrAtSpecified(2)) + "}");
+                        binary_trampoline.customFunction();
+                        binary_trampoline.invoke();
+                        i++;
+                    }
+                    i ++;
+                }
+            }catch(Exception e ){
+                binary_trampoline.customFunction();
+                binary_trampoline.invoke();
+            }
+        } catch(Exception e){
+            binary_trampoline.customFunction();
+            binary_trampoline.invoke();
+        }
+        binary_trampoline.customFunction();
+
+    }
 
     // This is the standard, stable way of mapping, which supports extensive
     // customization and mapping of Java to native types.
@@ -78,6 +127,7 @@ public class App {
                         AtomicInteger j = new AtomicInteger(3);
                         local_overwrite.parallelStream().forEach(number -> {
                             System.out.println("{callee or RIP at this point before write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
+                            System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
                             try {
                                 local_overwrite.set(j.get(), number);
                             }catch(Exception e){
@@ -86,12 +136,13 @@ public class App {
                             System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
                             j.getAndIncrement();
                         });
+                        System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
                         System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
                         binary_trampoline.customFunction();
                     }catch(Exception e){
                         System.out.println(i);
+                        System.out.println("{callee of 1: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
                         System.out.println("{callee of 0: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
-                        System.out.println("{callee or RIP at this point: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
                         //System.out.println("{callee of 2: " + Long.toHexString(binary_trampoline.getLrAtSpecified(2)) + "}");
                         binary_trampoline.customFunction();
                         binary_trampoline.invoke();
@@ -109,6 +160,53 @@ public class App {
         }
         binary_trampoline.customFunction();
 
+
+    }
+
+    public void run() {
+        LinkedList<Integer> local_overwrite = new LinkedList<Integer>(Collections.singleton(3));
+        InstrumentBinary binary_trampoline = new InstrumentBinary();
+        try{
+            int i = 0;
+            try {
+                while (i < 10) {
+                    try {
+                        binary_trampoline.customFunction();
+                        AtomicInteger j = new AtomicInteger(3);
+                        local_overwrite.parallelStream().forEach(number -> {
+                            System.out.println("{callee or RIP at this point before write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
+                            System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
+                            try {
+                                local_overwrite.set(j.get(), number);
+                            }catch(Exception e){
+                                System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
+                            }
+                            System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
+                            j.getAndIncrement();
+                        });
+                        System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
+                        System.out.println("{callee or RIP at this point after write: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
+                        binary_trampoline.customFunction();
+                    }catch(Exception e){
+                        System.out.println(i);
+                        System.out.println("{callee of 1: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
+                        System.out.println("{callee of 0: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
+                        //System.out.println("{callee of 2: " + Long.toHexString(binary_trampoline.getLrAtSpecified(2)) + "}");
+                        binary_trampoline.customFunction();
+                        binary_trampoline.invoke();
+                        i++;
+                    }
+                    i ++;
+                }
+            }catch(Exception e ){
+                binary_trampoline.customFunction();
+                binary_trampoline.invoke();
+            }
+        } catch(Exception e){
+            binary_trampoline.customFunction();
+            binary_trampoline.invoke();
+        }
+        binary_trampoline.customFunction();
 
     }
 }

@@ -1,11 +1,10 @@
-package com.utece.studnet.llpdetection.instrumentation;
+package com.utece.student.llpdetection.instrumentation;
 
 import com.utece.student.llpdetection.instrumentation.structures.context_t;
-import com.utece.student.llpdetection.instrumentation.Trampoline;
 
 public class InstrumentBinary {
 
-    Trampoline<Object> instrumentThis;
+    com.utece.student.llpdetection.instrumentation.Trampoline<Object> instrumentThis;
     long rip;
     long rax;
     long rbx;
@@ -21,14 +20,14 @@ public class InstrumentBinary {
     //-Start with a java program and insert into the class file the basic blocks
 
     public InstrumentBinary(){
-        this.instrumentThis = new Trampoline<>(){
+        this.instrumentThis = new com.utece.student.llpdetection.instrumentation.Trampoline<>(){
             @java.lang.Override
             public java.lang.Object get() {
                 return super.get();
             }
 
             @java.lang.Override
-            public Trampoline<Object> run(){
+            public com.utece.student.llpdetection.instrumentation.Trampoline<Object> run(){
                 long rip;
                 long rax;
                 long rbx;
