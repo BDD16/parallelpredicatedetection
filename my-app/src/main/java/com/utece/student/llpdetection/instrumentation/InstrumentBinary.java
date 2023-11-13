@@ -12,7 +12,7 @@ public class InstrumentBinary {
     long rdx;
     int window = 0x4242;
 
-    context_t context = new com.utece.student.llpdetection.instrumentation.structures.context_t();
+    context_t context; //= new com.utece.student.llpdetection.instrumentation.structures.context_t();
     //StructureReadContext printThis = new StructureReadContext(context);
 
     //-Essentially you need to hook into a basic block from a binary.
@@ -20,6 +20,7 @@ public class InstrumentBinary {
     //-Start with a java program and insert into the class file the basic blocks
 
     public InstrumentBinary(){
+        context = new com.utece.student.llpdetection.instrumentation.structures.context_t();
         this.instrumentThis = new com.utece.student.llpdetection.instrumentation.Trampoline<>(){
             @java.lang.Override
             public java.lang.Object get() {
@@ -75,6 +76,10 @@ public class InstrumentBinary {
 
     public long getLrAtSpecified(int specified){
         return com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegister64Wrapper.instance.print_lr_at_callee(specified);
+    }
+
+    public long getRip(){
+        return com.utece.student.llpdetection.instrumentation.inlineassembly.NativeAssemblyRegister64Wrapper.instance.print_eip();
     }
 
     public void customFunction(){

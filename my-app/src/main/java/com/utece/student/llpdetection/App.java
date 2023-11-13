@@ -61,6 +61,7 @@ public class App {
     // customization and mapping of Java to native types.
 
     public static void main(String[] args) {
+
         LinkedList<Integer> local_overwrite = new LinkedList<Integer>(Collections.singleton(3));
 //        int window = 0x4242;
 //
@@ -113,6 +114,7 @@ public class App {
 //        System.out.println(context);
 //        x.run();
         InstrumentBinary binary_trampoline = new InstrumentBinary();
+        /*
 //        binary_trampoline.invoke(); // after a function turn into a decorator for each function or basic block
 //        binary_trampoline.customFunction();
 //        binary_trampoline.customFunction();
@@ -159,6 +161,34 @@ public class App {
             binary_trampoline.invoke();
         }
         binary_trampoline.customFunction();
+        */
+
+        /*
+         *
+         *
+         *
+         */
+        System.out.println("BEGIN EXPERIMENT:");
+        final long lr = binary_trampoline.getLrAtSpecified(1);
+        final long again_lr = binary_trampoline.getLrAtSpecified(1);
+        try{
+            final long another_lr = binary_trampoline.getRip();;
+            final long another_eip = binary_trampoline.getRip();
+            System.out.println("another_lr: " + another_lr);
+            System.out.println("another_eip: " + another_eip);
+        }catch(Exception e){
+            long x = binary_trampoline.getLrAtSpecified(0);
+            System.out.println("X" +  x);
+
+        }
+        System.out.println(lr);
+        System.out.println(again_lr);
+        long eip = binary_trampoline.getRip();
+        System.out.println(eip);
+        System.out.println("{callee of rip: " + Long.toHexString(binary_trampoline.getRip()) + "}");
+        System.out.println("{callee of rip: " + Long.toHexString(binary_trampoline.getRip()) + "}");
+        System.out.println("{callee of rip: " + Long.toHexString(binary_trampoline.getRip()) + "}");
+        System.out.println("{callee of rip: " + Long.toHexString(binary_trampoline.getRip()) + "}");
 
 
     }
@@ -191,7 +221,10 @@ public class App {
                         System.out.println(i);
                         System.out.println("{callee of 1: " + Long.toHexString(binary_trampoline.getLrAtSpecified(1)) + "}");
                         System.out.println("{callee of 0: " + Long.toHexString(binary_trampoline.getLrAtSpecified(0)) + "}");
-                        //System.out.println("{callee of 2: " + Long.toHexString(binary_trampoline.getLrAtSpecified(2)) + "}");
+                        System.out.println("{callee of rip: " + Long.toHexString(binary_trampoline.getRip()) + "}");
+                        System.out.println("{callee of rip: " + Long.toHexString(binary_trampoline.getRip()) + "}");
+                        System.out.println("{callee of rip: " + Long.toHexString(binary_trampoline.getRip()) + "}");
+                        System.out.println("{callee of rip: " + Long.toHexString(binary_trampoline.getRip()) + "}");
                         binary_trampoline.customFunction();
                         binary_trampoline.invoke();
                         i++;
@@ -207,6 +240,7 @@ public class App {
             binary_trampoline.invoke();
         }
         binary_trampoline.customFunction();
+
 
     }
 }

@@ -46,8 +46,21 @@ JavaAgent extends abstractAgent {
         System.out.println("agentArgs: " + agentArgs);
         String className = "com.utece.student.llpdetection.App";
         //com.utece.student.llpdetection.agents.JavaAgent tryThis = new com.utece.student.llpdetection.agents.JavaAgent();
-        jvm.loadAgent(String.valueOf(new URI("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar")));
-        jvm.detach();
+        try {
+            jvm.loadAgent(String.valueOf(new URI("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar")));
+            jvm.detach();
+        }catch(java.lang.NullPointerException e){
+            try {
+                String jvmPid_static = jvmName.substring(0, jvmName.indexOf('@'));
+
+                System.out.println(jvmPid_static);
+                jvm = VirtualMachine.attach(jvmPid_static);
+            } catch (AttachNotSupportedException | IOException g) {
+                throw new RuntimeException(g);
+            }
+        }
+        System.out.println("This is the classname: " + className);
+
         transformClass(className, inst);
 
     }
