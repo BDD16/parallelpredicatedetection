@@ -1,19 +1,14 @@
 package com.utece.student.llpdetection.instrumentation.structures;
 
-import com.sun.jna.Library;
-import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.Structure.FieldOrder;
-import com.sun.jna.FromNativeContext;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import com.sun.jna.Pointer;
-import com.utece.student.llpdetection.instrumentation.structures.sigset_t;
-import com.utece.student.llpdetection.instrumentation.structures.stack_t;
 
 /**
  * typedef struct ucontext_t {
@@ -32,8 +27,8 @@ public class context_t extends Structure {
     private static final int PADDING_SIZE = 20 - 2 * NativeLong.SIZE - 4;
 
     public Pointer uc_context;
-    public sigset_t uc_sigmask;
-    public stack_t uc_stack;
+    public com.utece.student.llpdetection.instrumentation.structures.sigset_t uc_sigmask;
+    public com.utece.student.llpdetection.instrumentation.structures.stack_t uc_stack;
     public Pointer mcontext_ptr;
 
     public byte[] _f = new byte[PADDING_SIZE];

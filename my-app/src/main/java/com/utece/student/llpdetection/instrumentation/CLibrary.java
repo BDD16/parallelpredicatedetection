@@ -3,7 +3,6 @@ package com.utece.student.llpdetection.instrumentation;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import com.sun.jna.Platform;
 import com.utece.student.llpdetection.instrumentation.structures.context_t;
 public interface CLibrary extends Library {
 

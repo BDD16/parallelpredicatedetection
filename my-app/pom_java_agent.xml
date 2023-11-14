@@ -12,11 +12,17 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>20</maven.compiler.source>
-    <maven.compiler.target>20</maven.compiler.target>
+    <maven.compiler.source>19</maven.compiler.source>
+    <maven.compiler.target>19</maven.compiler.target>
   </properties>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/com.github.olivergondza/maven-jdk-tools-wrapper -->
+    <dependency>
+      <groupId>com.github.olivergondza</groupId>
+      <artifactId>maven-jdk-tools-wrapper</artifactId>
+      <version>0.1</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -31,11 +37,11 @@
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna -->
-      <dependency>
-          <groupId>net.java.dev.jna</groupId>
-          <artifactId>jna</artifactId>
-          <version>5.13.0</version>
-      </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>5.13.0</version>
+    </dependency>
 
     <dependency>
       <groupId>com.utece.student.llpdetection.instrumentation.inlineassembly</groupId>
@@ -54,8 +60,10 @@
     <dependency>
       <groupId>org.javassist</groupId>
       <artifactId>javassist</artifactId>
-      <version>3.21.0-GA</version>
+      <version>3.29.2-GA</version>
     </dependency>
+
+
 
 
   </dependencies>
@@ -114,21 +122,21 @@
           </execution>
         </executions>
           <configuration>
-            <mainClass>com.utece.student.llpdetection.agents.Launcher</mainClass>
+            <mainClass>com.utece.student.llpdetection.instrumentation.DynamicDebuggerWithProcessAttachAndPID</mainClass>
           </configuration>
         </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version>
-          <configuration>
-            <fork>true</fork>
-            <compilerArgs>
-              <arg>-cp</arg>
-              <arg>${java.home}/lib/tools.jar</arg>
-            </compilerArgs>
-          </configuration>
-        </plugin>
+<!--        <plugin>-->
+<!--          <groupId>org.apache.maven.plugins</groupId>-->
+<!--          <artifactId>maven-compiler-plugin</artifactId>-->
+<!--          <version>3.8.1</version>-->
+<!--          <configuration>-->
+<!--            <fork>true</fork>-->
+<!--            <compilerArgs>-->
+<!--              <arg>-cp</arg>-->
+<!--              <arg>${java.home}/lib/tools.jar</arg>-->
+<!--            </compilerArgs>-->
+<!--          </configuration>-->
+<!--        </plugin>-->
       </plugins>
     </pluginManagement>
   </build>

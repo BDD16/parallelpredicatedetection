@@ -5,6 +5,7 @@ import com.sun.tools.attach.AgentInitializationException;
 import com.sun.tools.attach.AgentLoadException;
 import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
+import com.utece.student.llpdetection.instrumentation.DynamicDebuggerWithProcessAttachAndPID;
 
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
@@ -26,16 +27,10 @@ JavaAgent extends abstractAgent {
         super();
         {
 
-            try {
-                this.jvmPid = jvmName.substring(0, jvmName.indexOf('@'));
-                String jvmPid1 = jvmPid;
-                System.out.println(jvmPid);
-                this.jvm = VirtualMachine.attach(jvmPid1);
-            } catch (AttachNotSupportedException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            this.jvmPid = jvmName.substring(0, jvmName.indexOf('@'));
+            String jvmPid1 = jvmPid;
+            System.out.println(jvmPid);
+            this.jvm = (VirtualMachine) DynamicDebuggerWithProcessAttachAndPID.attachToProcess(jvmPid1);
         }
     }
 
@@ -44,7 +39,7 @@ JavaAgent extends abstractAgent {
 
         System.out.println("[Agent] In premain method");
         System.out.println("agentArgs: " + agentArgs);
-        String className = "com.utece.student.llpdetection.agents.JavaAgent";
+        String className = "parallelalgorithms.group9.homework3.ParallelRunners";
         //com.utece.student.llpdetection.agents.JavaAgent tryThis = new com.utece.student.llpdetection.agents.JavaAgent();
         try {
             jvm.loadAgent(String.valueOf(new URI("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar")));
@@ -65,12 +60,7 @@ JavaAgent extends abstractAgent {
 
     }
 
-    public static void premain(String[] stringArgs){
 
-//            System.out.println("[Agent] In premain method");
-//            String className = "com.utece.student.llpdetection.App";
-//            transformClass(className,inst);
-        }
     }
 
 //public class transfromClass{

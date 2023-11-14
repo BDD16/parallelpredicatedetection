@@ -26,7 +26,7 @@ public class DynamicDebuggerWithProcessAttachAndPID {
         }
     }
 
-    private static VirtualMachine launchAndConnect(String mainClassName) {
+    public static VirtualMachine launchAndConnect(String mainClassName) {
         LaunchingConnector connector = findLaunchingConnector();
 
         if (connector == null) {
@@ -53,7 +53,7 @@ public class DynamicDebuggerWithProcessAttachAndPID {
                 .findFirst()
                 .orElse(null);
     }
-    private static VirtualMachine attachToProcess(String processId) {
+    public static VirtualMachine attachToProcess(String processId) {
         LaunchingConnector connector = findLaunchingConnector();
 
         if (connector == null) {

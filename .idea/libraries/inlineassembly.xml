@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="inlineassembly">
+    <CLASSES />
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/my-app/src/main/java/com/utece/student/llpdetection/instrumentation/inlineassembly" />
+    </NATIVE>
+    <SOURCES />
+  </library>
+</component>

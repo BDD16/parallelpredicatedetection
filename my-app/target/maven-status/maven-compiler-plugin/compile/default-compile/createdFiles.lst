@@ -19,7 +19,6 @@ NativeAssembly_64.class
 TrampolineExample.class
 transformers/Transformer.class
 com/utece/student/llpdetection/instrumentation/structures/context_t.class
-com/utece/student/llpdetection/instrumentation/Sysinfo.class
 parallelalgorithms/group9/homework3/api/groupNine.class
 parallelalgorithms/group9/homework3/api/api.class
 agentLoader/abstractAgent.class

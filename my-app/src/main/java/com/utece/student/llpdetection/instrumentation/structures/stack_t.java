@@ -1,17 +1,13 @@
 package com.utece.student.llpdetection.instrumentation.structures;
 
-import com.sun.jna.Library;
-import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Structure;
 import com.sun.jna.Structure.FieldOrder;
-import com.sun.jna.FromNativeContext;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import com.sun.jna.Pointer;
 
 /**
  * void     *ss_sp       Stack base or pointer.
