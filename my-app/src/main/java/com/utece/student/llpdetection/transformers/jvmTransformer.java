@@ -1,21 +1,17 @@
-package transformers;
+package com.utece.student.llpdetection.transformers;
 
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
-
-import javassist.NotFoundException;
-import javassist.CannotCompileException;
+import javassist.*;
 
 import java.io.IOException;
-import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
-public class jvmTransformer extends Transformer implements ClassFileTransformer {
+public class jvmTransformer extends Transformer {
 
     ClassLoader targetClassLoader = null;
+    public String targetClassName;
 
     public jvmTransformer(String name, ClassLoader classLoader) {
         super();
+
     }
 
     @Override
@@ -26,7 +22,9 @@ public class jvmTransformer extends Transformer implements ClassFileTransformer 
             ProtectionDomain protectionDomain,
             byte[] classfileBuffer) {
         byte[] byteCode = classfileBuffer;
-        String finalTargetClassName = this.targetClassName.toString().replaceAll("\\.", "/");
+
+        this.targetClassName = className;
+        String finalTargetClassName = this.targetClassName.replaceAll("\\.", "/");
         if (!className.equals(finalTargetClassName)) {
             return byteCode;
         }
@@ -37,7 +35,7 @@ public class jvmTransformer extends Transformer implements ClassFileTransformer 
             System.out.println("[Agent] Transforming class MyAtm");
             try {
                 ClassPool cp = ClassPool.getDefault();
-                CtClass cc = cp.get(targetClassName.get(0));
+                CtClass cc = cp.get(targetClassName);
                 CtMethod m = cc.getDeclaredMethod(
                         "main");
                 m.addLocalVariable(

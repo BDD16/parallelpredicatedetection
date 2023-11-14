@@ -1,10 +1,10 @@
 package com.utece.student.llpdetection.agents;
 
-import agentLoader.abstractAgent;
 import com.sun.tools.attach.AgentInitializationException;
 import com.sun.tools.attach.AgentLoadException;
 import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
+import com.utece.student.llpdetection.agentLoader.abstractAgent;
 import com.utece.student.llpdetection.instrumentation.DynamicDebuggerWithProcessAttachAndPID;
 
 import java.io.IOException;
@@ -55,8 +55,6 @@ JavaAgent extends abstractAgent {
             }
         }
         System.out.println("This is the classname: " + className);
-
-        transformClass(className, inst);
 
     }
 

@@ -1,16 +1,21 @@
 package com.utece.student.llpdetection.instrumentation;
 
 import com.sun.jdi.Bootstrap;
-import com.sun.jdi.VirtualMachine;
 import com.sun.jdi.connect.Connector.Argument;
 import com.sun.jdi.connect.LaunchingConnector;
+import com.sun.tools.attach.AttachNotSupportedException;
+import com.sun.tools.attach.VirtualMachine;
+import com.utece.student.llpdetection.transformers.jvmTransformer;
 
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DynamicDebuggerWithProcessAttachAndPID {
-    public static void main(String[] args) {
+    jvmTransformer x;
+    public static void main(String[] args) throws IOException, AttachNotSupportedException {
 //        if (args.length < 2) {
 //            System.out.println("Usage: DynamicDebuggerWithProcessAttachAndPID <processId> <className>");
 //            System.exit(1);
@@ -26,8 +31,18 @@ public class DynamicDebuggerWithProcessAttachAndPID {
         }
     }
 
-    public static VirtualMachine launchAndConnect(String mainClassName) {
+    public static com.sun.tools.attach.VirtualMachine launchAndConnect(String mainClassName) throws IOException, AttachNotSupportedException {
         LaunchingConnector connector = findLaunchingConnector();
+
+        String jvmName = ManagementFactory.getRuntimeMXBean().getName();
+        String jvmPid = jvmName.substring(0, jvmName.indexOf('@'));
+
+        VirtualMachine self = VirtualMachine.attach(jvmPid);
+
+        if(self != null){
+            return self;
+        }
+
 
         if (connector == null) {
             System.err.println("Launching connector not found");
@@ -38,7 +53,7 @@ public class DynamicDebuggerWithProcessAttachAndPID {
         arguments.get("main").setValue(mainClassName);
 
         try {
-            return connector.launch(arguments);
+            return (com.sun.tools.attach.VirtualMachine) connector.launch(arguments);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -65,7 +80,7 @@ public class DynamicDebuggerWithProcessAttachAndPID {
         arguments.get("pid").setValue(processId);
 
         try {
-            return connector.launch(arguments);
+            return (VirtualMachine) connector.launch(arguments);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -100,7 +115,7 @@ public class DynamicDebuggerWithProcessAttachAndPID {
         int getpid();
     }
 
-    private static String getCurrentProcessId() {
+    public static String getCurrentProcessId() {
         //Platform platform = Platform.detect();
 //        if (platform.isWindows()) {
 //            return getWindowsProcessId();
@@ -138,7 +153,7 @@ public class DynamicDebuggerWithProcessAttachAndPID {
         arguments.get("main").setValue(className);
 
         try {
-            return connector.get().launch(arguments);
+            return (VirtualMachine) connector.get().launch(arguments);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

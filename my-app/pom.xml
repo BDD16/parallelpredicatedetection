@@ -126,7 +126,7 @@
           </execution>
         </executions>
           <configuration>
-            <mainClass>com.utece.student.llpdetection.instrumentation.DynamicDebuggerWithProcessAttachAndPID</mainClass>
+            <mainClass>com.utece.student.llpdetection.agents.Launcher</mainClass>
           </configuration>
         </plugin>
 <!--        <plugin>-->

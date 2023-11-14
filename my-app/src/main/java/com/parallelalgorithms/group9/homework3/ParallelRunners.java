@@ -52,6 +52,10 @@ public class ParallelRunners
 
         return (GraphInterface) g;
     }
+
+    public static void run(String[] args){
+        main(args);
+}
     public static void main( String[] args )
     {
         groupNine OG9 = new groupNine();

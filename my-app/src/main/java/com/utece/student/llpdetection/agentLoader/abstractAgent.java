@@ -1,9 +1,9 @@
-package agentLoader;
+package com.utece.student.llpdetection.agentLoader;
 
 import com.sun.tools.attach.AgentInitializationException;
 import com.sun.tools.attach.AgentLoadException;
 import com.sun.tools.attach.AttachNotSupportedException;
-import transformers.jvmTransformer;
+import com.utece.student.llpdetection.transformers.jvmTransformer;
 
 import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
@@ -32,17 +32,21 @@ public abstract class abstractAgent {
 
     public static void transformClass(
             String className, Instrumentation instrumentation) {
-        Class<?> targetCls = null;
-        ClassLoader targetClassLoader = null;
+        Class<?> targetCls;
+        ClassLoader targetClassLoader;
         // see if we can get the class using forName
-        try {
-            targetCls = Class.forName(className);
-            targetClassLoader = targetCls.getClassLoader();
-            transform(targetCls, targetClassLoader, instrumentation);
-            return;
-        } catch (Exception ex) {
-            assert targetCls != null;
-            System.out.println("Error in loading class " + targetCls.toString());
+        for(Class<?> clazz: instrumentation.getAllLoadedClasses()) {
+            if(clazz.getName().equals(className)) {
+                targetCls = clazz;
+                try {
+                    targetClassLoader = targetCls.getClassLoader();
+
+                    transform(targetCls, targetClassLoader, instrumentation);
+                    return;
+                }catch(Exception e){
+                    System.out.println(e);
+                }
+            }
         }
         // otherwise iterate all loaded classes and find what we want
         for(Class<?> clazz: instrumentation.getAllLoadedClasses()) {

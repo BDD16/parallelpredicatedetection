@@ -1,5 +1,6 @@
-package transformers;
+package com.utece.student.llpdetection.transformers;
 
+import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ public abstract class Transformer {
             Class<?> clazz,
             ClassLoader classLoader,
             Instrumentation instrumentation) {
-        jvmTransformer dt = new jvmTransformer(
+        com.utece.student.llpdetection.transformers.jvmTransformer dt = new com.utece.student.llpdetection.transformers.jvmTransformer(
                 clazz.getName(), classLoader);
-        instrumentation.addTransformer(dt, true);
+        instrumentation.addTransformer((ClassFileTransformer) dt, true);
         try {
             instrumentation.retransformClasses(clazz);
         } catch (Exception ex) {
