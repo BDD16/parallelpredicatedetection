@@ -5,7 +5,7 @@ import com.sun.tools.attach.AgentLoadException;
 import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
 import com.utece.student.llpdetection.agentLoader.abstractAgent;
-import com.utece.student.llpdetection.instrumentation.DynamicDebuggerWithProcessAttachAndPID;
+import com.utece.student.llpdetection.transformers.jvmTransformer;
 
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
@@ -21,6 +21,8 @@ JavaAgent extends abstractAgent {
     static String jvmPid = jvmName.substring(0, jvmName.indexOf('@'));
     static VirtualMachine jvm;
 
+    static jvmTransformer t;
+
 
 
     public JavaAgent() throws IOException, AttachNotSupportedException {
@@ -30,8 +32,16 @@ JavaAgent extends abstractAgent {
             this.jvmPid = jvmName.substring(0, jvmName.indexOf('@'));
             String jvmPid1 = jvmPid;
             System.out.println(jvmPid);
-            this.jvm = (VirtualMachine) DynamicDebuggerWithProcessAttachAndPID.attachToProcess(jvmPid1);
+            //this.jvm = (VirtualMachine) DynamicDebuggerWithProcessAttachAndPID.attachToProcess(jvmPid1);
         }
+    }
+
+    public static void agentmain(String agentArgs, Instrumentation inst) throws URISyntaxException, AgentLoadException, IOException, AgentInitializationException {
+
+            System.out.println("[Agent] In agentmain method");
+            String className = "parallelalgorithms.group9.homework3.ParallelRunners";
+            com.utece.student.llpdetection.transformers.jvmTransformer transformer = new jvmTransformer(className, inst.getClass().getClassLoader());
+            t = transformer;
     }
 
     public static void premain(

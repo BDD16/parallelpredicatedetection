@@ -3,8 +3,9 @@ package com.utece.student.llpdetection.transformers;
 import javassist.*;
 
 import java.io.IOException;
+import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
-public class jvmTransformer extends Transformer {
+public class jvmTransformer extends com.utece.student.llpdetection.transformers.Transformer implements ClassFileTransformer {
 
     ClassLoader targetClassLoader = null;
     public String targetClassName;
