@@ -41,6 +41,7 @@ public abstract class abstractAgent {
             transform(targetCls, targetClassLoader, instrumentation);
             return;
         } catch (Exception ex) {
+            assert targetCls != null;
             System.out.println("Error in loading class " + targetCls.toString());
         }
         // otherwise iterate all loaded classes and find what we want

@@ -4,7 +4,7 @@ import com.utece.student.llpdetection.instrumentation.structures.context_t;
 
 public class InstrumentBinary {
 
-    com.utece.student.llpdetection.instrumentation.Trampoline<Object> instrumentThis;
+    com.utece.student.llpdetection.instrumentation.Trampoline instrumentThis;
     long rip;
     long rax;
     long rbx;

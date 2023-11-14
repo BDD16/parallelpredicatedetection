@@ -109,7 +109,7 @@ public interface GraphInterface{
     }
 
     // Construct the path from the parent array
-    private List<Integer> constructPath(int[] parent, int source, int target) {
+    default List<Integer> constructPath(int[] parent, int source, int target) {
         List<Integer> path = new ArrayList<>();
         int current = target;
         while (current != -1) {

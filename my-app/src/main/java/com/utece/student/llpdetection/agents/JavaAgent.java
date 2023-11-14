@@ -44,7 +44,7 @@ JavaAgent extends abstractAgent {
 
         System.out.println("[Agent] In premain method");
         System.out.println("agentArgs: " + agentArgs);
-        String className = "com.utece.student.llpdetection.App";
+        String className = "com.utece.student.llpdetection.agents.JavaAgent";
         //com.utece.student.llpdetection.agents.JavaAgent tryThis = new com.utece.student.llpdetection.agents.JavaAgent();
         try {
             jvm.loadAgent(String.valueOf(new URI("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar")));

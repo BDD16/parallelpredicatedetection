@@ -1,15 +1,12 @@
 package com.utece.student.llpdetection.instrumentation;
 
+import com.sun.jna.NativeLong;
+import com.sun.jna.Structure;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import com.sun.jna.Library;
-import com.sun.jna.Native;
-import com.sun.jna.NativeLong;
-import com.sun.jna.Structure;
-import com.sun.jna.Structure.FieldOrder;
 public class Sysinfo extends Structure {
     private static final int PADDING_SIZE = 20 - 2 * NativeLong.SIZE - 4;
 

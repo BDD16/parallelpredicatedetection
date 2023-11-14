@@ -1,4 +1,4 @@
-package com.sun.jna.examples;
+package com.utece.student.llpdetection;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;

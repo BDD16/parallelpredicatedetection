@@ -177,7 +177,7 @@ public class Graph implements com.parallelalgorithms.group9.homework3.util.Graph
     }
 
     // Construct the path from the parent array
-    private List<Integer> constructPath(int[] parent, int source, int target) {
+    public List<Integer> constructPath(int[] parent, int source, int target) {
         List<Integer> path = new ArrayList<>();
         int current = target;
         while (current != -1) {
