@@ -2,4 +2,3 @@ Agent-Class: com.utece.student.llpdetection.agents.JavaAgent
 Can-Redefine-Classes: true
 Can-Retransform-Classes: true
 Premain-Class: com.utece.student.llpdetection.agents.JavaAgent
-Launcher-Agent-Class: com.utece.student.llpdetection.agents.Launcher

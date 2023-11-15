@@ -2,15 +2,14 @@ package com.utece.student.llpdetection.agents;
 
 import com.sun.tools.attach.AgentInitializationException;
 import com.sun.tools.attach.AgentLoadException;
-import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
 import com.utece.student.llpdetection.agentLoader.abstractAgent;
+import com.utece.student.llpdetection.transformers.Transformer;
 import com.utece.student.llpdetection.transformers.jvmTransformer;
 
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
-import java.net.URI;
 import java.net.URISyntaxException;
 
 public class
@@ -25,7 +24,7 @@ JavaAgent extends abstractAgent {
 
 
 
-    public JavaAgent() throws IOException, AttachNotSupportedException {
+    public JavaAgent() {
         super();
         {
 
@@ -36,34 +35,33 @@ JavaAgent extends abstractAgent {
         }
     }
 
-    public static void agentmain(String agentArgs, Instrumentation inst) throws URISyntaxException, AgentLoadException, IOException, AgentInitializationException {
+    public static void agentmain(String agentArgs, Instrumentation inst) {
 
             System.out.println("[Agent] In agentmain method");
             String className = "parallelalgorithms.group9.homework3.ParallelRunners";
-            com.utece.student.llpdetection.transformers.jvmTransformer transformer = new jvmTransformer(className, inst.getClass().getClassLoader());
-            t = transformer;
+            Transformer.transform(parallelalgorithms.group9.homework3.ParallelRunners.class.getComponentType(), inst.getClass().getClassLoader(), inst);
     }
 
     public static void premain(
-            String agentArgs, Instrumentation inst) throws AttachNotSupportedException, URISyntaxException, AgentLoadException, AgentInitializationException, IOException {
+            String agentArgs, Instrumentation inst) throws URISyntaxException, AgentLoadException, AgentInitializationException, IOException {
 
         System.out.println("[Agent] In premain method");
         System.out.println("agentArgs: " + agentArgs);
         String className = "parallelalgorithms.group9.homework3.ParallelRunners";
         //com.utece.student.llpdetection.agents.JavaAgent tryThis = new com.utece.student.llpdetection.agents.JavaAgent();
-        try {
-            jvm.loadAgent(String.valueOf(new URI("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar")));
-            jvm.detach();
-        }catch(java.lang.NullPointerException e){
-            try {
-                String jvmPid_static = jvmName.substring(0, jvmName.indexOf('@'));
-
-                System.out.println(jvmPid_static);
-                jvm = VirtualMachine.attach(jvmPid_static);
-            } catch (AttachNotSupportedException | IOException g) {
-                throw new RuntimeException(g);
-            }
-        }
+//        try {
+//            jvm.loadAgent(String.valueOf(new URI("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar")));
+//            jvm.detach();
+//        }catch(java.lang.NullPointerException e){
+//            try {
+//                String jvmPid_static = jvmName.substring(0, jvmName.indexOf('@'));
+//
+//                System.out.println(jvmPid_static);
+//                jvm = VirtualMachine.attach(jvmPid_static);
+//            } catch (AttachNotSupportedException | IOException g) {
+//                throw new RuntimeException(g);
+//            }
+//        }
         System.out.println("This is the classname: " + className);
 
     }

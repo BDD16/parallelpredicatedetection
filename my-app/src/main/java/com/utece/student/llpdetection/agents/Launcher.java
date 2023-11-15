@@ -35,13 +35,13 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
         if(true) {
             String targetProcessId = getCurrentProcessId();
-            String targetClassName = "com.parallelalgorithms.group9.homework3.ParallelRunners";
+            String targetClassName = "parallelalgorithms.group9.homework3.ParallelRunners";
 
             com.sun.tools.attach.VirtualMachine vm = launchAndConnect(targetClassName);
 
             x = new com.utece.student.llpdetection.transformers.jvmTransformer(targetClassName, vm.getClass().getClassLoader());
             vm.loadAgent("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar");
-            vm.detach();
+
 //            if (vm != null) {
 //                System.out.println("Connected to VM: " + vm);
 //
@@ -50,6 +50,7 @@ public class Launcher {
 //                vm.description();
 //                System.out.println(vm.toString());
 //            }
+            vm.detach();
 
         } else if(false) {
             com.utece.student.llpdetection.agents.AgentLoader.run(new String[]{"parallelalgorithms.group9.homework3.ParallelRunners"});

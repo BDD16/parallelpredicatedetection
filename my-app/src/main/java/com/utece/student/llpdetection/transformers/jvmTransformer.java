@@ -15,6 +15,13 @@ public class jvmTransformer extends com.utece.student.llpdetection.transformers.
 
     }
 
+    public byte[] getBytesFromTransform(ClassLoader loader,
+                                        String className,
+                                        Class<?> classBeingRedefined,
+                                        ProtectionDomain protectionDomain,
+                                        byte[] classfileBuffer){
+        return transform(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
+    }
     @Override
     public byte[] transform(
             ClassLoader loader,
@@ -33,7 +40,7 @@ public class jvmTransformer extends com.utece.student.llpdetection.transformers.
         if (className.equals(finalTargetClassName)
                 && loader.equals(targetClassLoader)) {
 
-            System.out.println("[Agent] Transforming class MyAtm");
+            System.out.println("[Agent] Transforming class " + className);
             try {
                 ClassPool cp = ClassPool.getDefault();
                 CtClass cc = cp.get(targetClassName);
