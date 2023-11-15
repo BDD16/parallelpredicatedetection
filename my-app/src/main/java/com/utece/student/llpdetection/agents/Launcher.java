@@ -6,6 +6,7 @@ import com.sun.tools.attach.AttachNotSupportedException;
 
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -21,7 +22,7 @@ public class Launcher {
     }
 
     public static void premain(
-            String agentArgs, Instrumentation inst) throws IOException, AttachNotSupportedException, URISyntaxException, AgentLoadException, AgentInitializationException {
+            String agentArgs, Instrumentation inst) throws IOException, AttachNotSupportedException, URISyntaxException, AgentLoadException, AgentInitializationException, NoSuchMethodException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
 
         System.out.println("[Agent] In premain method");
         System.out.println("agentArgs: " + agentArgs);
@@ -30,6 +31,8 @@ public class Launcher {
         agentForLauncher.jvm.loadAgent(String.valueOf(new URI("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar")));
         agentForLauncher.jvm.detach();
         agentForLauncher.transformClass(className, inst);
+        Class<?> targetClass = Class.forName(className);
+        targetClass.getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
 
     }
     public static void main(String[] args) throws Exception {
@@ -41,7 +44,9 @@ public class Launcher {
 
             x = new com.utece.student.llpdetection.transformers.jvmTransformer(targetClassName, vm.getClass().getClassLoader());
             vm.loadAgent("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar");
-
+            // start management agent
+            // detach
+            vm.detach();
 //            if (vm != null) {
 //                System.out.println("Connected to VM: " + vm);
 //
@@ -50,7 +55,7 @@ public class Launcher {
 //                vm.description();
 //                System.out.println(vm.toString());
 //            }
-            vm.detach();
+            //vm.detach();
 
         } else if(false) {
             com.utece.student.llpdetection.agents.AgentLoader.run(new String[]{"parallelalgorithms.group9.homework3.ParallelRunners"});

@@ -36,10 +36,16 @@ JavaAgent extends abstractAgent {
     }
 
     public static void agentmain(String agentArgs, Instrumentation inst) {
-
-            System.out.println("[Agent] In agentmain method");
-            String className = "parallelalgorithms.group9.homework3.ParallelRunners";
-            Transformer.transform(parallelalgorithms.group9.homework3.ParallelRunners.class.getComponentType(), inst.getClass().getClassLoader(), inst);
+            try {
+                System.out.println("[Agent] In agentmain method");
+                String className = "parallelalgorithms.group9.homework3.ParallelRunners";
+                Transformer.transform(parallelalgorithms.group9.homework3.ParallelRunners.class.getComponentType(), inst.getClass().getClassLoader(), inst);
+                Class<?> targetClass = Class.forName(className);
+                targetClass.getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
+            }catch(Exception e){
+                System.out.println(e);
+                System.out.println("DANGER DANGER DANGER");
+            }
     }
 
     public static void premain(
