@@ -41,8 +41,6 @@ public class Launcher {
             String targetClassName = "parallelalgorithms.group9.homework3.ParallelRunners";
 
             com.sun.tools.attach.VirtualMachine vm = launchAndConnect(targetClassName);
-
-            x = new com.utece.student.llpdetection.transformers.jvmTransformer(targetClassName, vm.getClass().getClassLoader());
             vm.loadAgent("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar");
             // start management agent
             // detach
@@ -60,6 +58,6 @@ public class Launcher {
         } else if(false) {
             com.utece.student.llpdetection.agents.AgentLoader.run(new String[]{"parallelalgorithms.group9.homework3.ParallelRunners"});
         }
-        System.out.println("MainProgram of Launcher: Does Nothing");
+        System.out.println("MainProgram of Launcher: Done");
     }
 }

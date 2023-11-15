@@ -5,13 +5,15 @@ import javassist.*;
 import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
-public class jvmTransformer extends com.utece.student.llpdetection.transformers.Transformer implements ClassFileTransformer {
+public class jvmTransformer implements ClassFileTransformer {
 
     ClassLoader targetClassLoader = null;
     public String targetClassName;
 
     public jvmTransformer(String name, ClassLoader classLoader) {
         super();
+        targetClassName = name;
+        targetClassLoader = classLoader;
 
     }
 
@@ -33,17 +35,17 @@ public class jvmTransformer extends com.utece.student.llpdetection.transformers.
 
         this.targetClassName = className;
         String finalTargetClassName = this.targetClassName.replaceAll("\\.", "/");
-        if (!className.equals(finalTargetClassName)) {
-            return byteCode;
-        }
-
-        if (className.equals(finalTargetClassName)
-                && loader.equals(targetClassLoader)) {
+//        if (!className.equals(finalTargetClassName)) {
+//            return byteCode;
+//        }
+//
+//        if (className.equals(finalTargetClassName)
+//                && loader.equals(targetClassLoader)) {
 
             System.out.println("[Agent] Transforming class " + className);
             try {
                 ClassPool cp = ClassPool.getDefault();
-                CtClass cc = cp.get(targetClassName);
+                CtClass cc = cp.get(finalTargetClassName);
                 CtMethod m = cc.getDeclaredMethod(
                         "main");
                 m.addLocalVariable(
@@ -51,7 +53,8 @@ public class jvmTransformer extends com.utece.student.llpdetection.transformers.
                 m.insertBefore(
                         "startTime = System.currentTimeMillis();" +
                                 "InstrumentBinary binary_trampoline = new InstrumentBinary();" +
-                                "binary_trampoline.customFunction();"
+                                "binary_trampoline.customFunction();" +
+                                "System.out.println('BANG BANG BANG');"
                         );
 
                 StringBuilder endBlock = new StringBuilder();
@@ -74,8 +77,9 @@ public class jvmTransformer extends com.utece.student.llpdetection.transformers.
                 cc.detach();
             } catch (NotFoundException | CannotCompileException | IOException e) {
                 System.out.println("Exception" + e);
+                System.out.println("Error in jvmTransformer");
             }
-        }
+
         return byteCode;
     }
 }

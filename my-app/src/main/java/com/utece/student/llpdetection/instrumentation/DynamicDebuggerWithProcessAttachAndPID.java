@@ -32,32 +32,16 @@ public class DynamicDebuggerWithProcessAttachAndPID {
     }
 
     public static com.sun.tools.attach.VirtualMachine launchAndConnect(String mainClassName) throws IOException, AttachNotSupportedException {
-        LaunchingConnector connector = findLaunchingConnector();
 
         String jvmName = ManagementFactory.getRuntimeMXBean().getName();
         String jvmPid = jvmName.substring(0, jvmName.indexOf('@'));
 
         VirtualMachine self = VirtualMachine.attach(jvmPid);
 
-        if(self != null){
+        if(self != null) {
             return self;
         }
-
-
-        if (connector == null) {
-            System.err.println("Launching connector not found");
-            return null;
-        }
-
-        Map<String, Argument> arguments = connector.defaultArguments();
-        arguments.get("main").setValue(mainClassName);
-
-        try {
-            return (com.sun.tools.attach.VirtualMachine) connector.launch(arguments);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return null;
     }
 
 

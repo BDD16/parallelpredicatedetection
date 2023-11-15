@@ -18,6 +18,8 @@ public abstract class Transformer {
                 instrumentation.retransformClasses(clazz);
             } catch (Exception ex) {
                 int x = 0;
+                System.out.println(clazz);
+                System.out.println("something happened for clazz: " + clazz);
             }
         }
     }
