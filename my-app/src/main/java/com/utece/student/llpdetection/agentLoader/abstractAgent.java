@@ -35,18 +35,23 @@ public abstract class abstractAgent {
         Class<?> targetCls;
         ClassLoader targetClassLoader;
         // see if we can get the class using forName
-        for(Class<?> clazz: instrumentation.getAllLoadedClasses()) {
-            if(clazz.getName().equals(className)) {
+        Class[] clazz_array = instrumentation.getAllLoadedClasses();
+        System.out.println(clazz_array);
+        for(Class<?> clazz: clazz_array) {
                 targetCls = clazz;
+                System.out.println("targetCls is: " + targetCls.toString());
                 try {
-                    targetClassLoader = targetCls.getClassLoader();
+                    if(targetCls.toString().contains("com.utece.student.llpdetection.agents.")){
+                    }
+                    else {
+                        targetClassLoader = instrumentation.getClass().getClassLoader();
 
-                    transform(targetCls, targetClassLoader, instrumentation);
-                    return;
+                        transform(targetCls, targetClassLoader, instrumentation);
+                        return;
+                    }
                 }catch(Exception e){
                     System.out.println(e);
                 }
-            }
         }
         // otherwise iterate all loaded classes and find what we want
         for(Class<?> clazz: instrumentation.getAllLoadedClasses()) {
@@ -57,8 +62,6 @@ public abstract class abstractAgent {
                 return;
             }
         }
-        throw new RuntimeException(
-                "Failed to find class [" + className + "]");
     }
 
     private static void transform(

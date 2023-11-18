@@ -97,6 +97,40 @@ JavaAgent extends abstractAgent {
         System.out.println("[Agent] In premain method");
         System.out.println("agentArgs: " + agentArgs);
         String className = "parallelalgorithms.group9.homework3.ParallelRunners";
+
+        try {
+            //System.out.println("[Agent] In agentmain method");
+            //String className = "parallelalgorithms.group9.homework3.ParallelRunners";
+            com.utece.student.llpdetection.transformers.Transformer.transform(parallelalgorithms.group9.homework3.ParallelRunners.class.getComponentType(), inst.getClass().getClassLoader(), inst);
+            System.out.println(inst.isRetransformClassesSupported());
+
+            Class[] classArray = inst.getAllLoadedClasses();
+            System.out.println(Arrays.toString(classArray));
+            Arrays.stream((Class[]) Arrays.stream(classArray).toArray()).forEach(c -> {
+                Class<?> targetClass;
+                try {
+                    targetClass = Class.forName(c.toString());
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+
+                    try {
+                        transform(targetClass, ClassLoader.getSystemClassLoader(), inst);
+                        c.getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    } catch (InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    } catch (NoSuchMethodException e) {
+                        throw new RuntimeException(e);
+                    }
+            });
+
+        }catch(Exception e){
+            System.out.println(e);
+            System.out.println("DANGER DANGER DANGER");
+        }
+
 //        try{
 //            Class<?> targetClass = Class.forName(className);
 //            targetClass.getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
