@@ -8,10 +8,12 @@ import com.utece.student.llpdetection.transformers.jvmTransformer;
 
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
+import java.lang.instrument.UnmodifiableClassException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class
 
@@ -77,16 +79,17 @@ JavaAgent extends abstractAgent {
             Class<?> clazz,
             ClassLoader classLoader,
             Instrumentation instrumentation) {
-        if(clazz != null && classLoader !=null) {
-            com.utece.student.llpdetection.transformers.jvmTransformer dt = new com.utece.student.llpdetection.transformers.jvmTransformer(
-                    clazz.getName(), classLoader);
-            instrumentation.addTransformer(dt, true);
+        if(clazz != null && classLoader !=null && clazz.getName().contains("parallelalgorithms.group9.homework3")) {
+
+                t = new jvmTransformer(
+                        clazz.getName(), classLoader);
+            instrumentation.addTransformer(t, true);
+
+            System.out.println("retransforming class: " + clazz);
             try {
                 instrumentation.retransformClasses(clazz);
-            } catch (Exception ex) {
-                int x = 0;
-                System.out.println(clazz);
-                System.out.println("something happened for clazz: " + clazz);
+            }catch(UnmodifiableClassException e){
+                System.out.println(e);
             }
         }
     }
@@ -106,23 +109,23 @@ JavaAgent extends abstractAgent {
 
             Class[] classArray = inst.getAllLoadedClasses();
             System.out.println(Arrays.toString(classArray));
-            Arrays.stream((Class[]) Arrays.stream(classArray).toArray()).forEach(c -> {
-                Class<?> targetClass;
+            Arrays.stream(new Object[]{Arrays.stream(classArray).collect(Collectors.toList())}).forEach(c -> {
+                Class<?> targetClass = null;
                 try {
-                    targetClass = Class.forName(c.toString());
+                    targetClass = Class.forName(c.getClass().getName().toString());
                 } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
+                    System.out.println(c + " : cannot be transformed so skipping");
+
                 }
 
                     try {
                         transform(targetClass, ClassLoader.getSystemClassLoader(), inst);
-                        c.getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    } catch (InvocationTargetException e) {
-                        throw new RuntimeException(e);
-                    } catch (NoSuchMethodException e) {
-                        throw new RuntimeException(e);
+                        //c.getClass().getEnclosingClass().getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
+                    } catch(java.lang.ClassCastException e){
+                        System.out.println(className + " : cannot be transformed so skipping");
+                    }
+                    catch(java.lang.NullPointerException e){
+                        System.out.println("skipping a null return");
                     }
             });
 

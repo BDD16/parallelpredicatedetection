@@ -35,12 +35,8 @@ public class jvmTransformer implements ClassFileTransformer {
 
         this.targetClassName = className;
         String finalTargetClassName = this.targetClassName.replaceAll("\\.", "/");
-//        if (!className.equals(finalTargetClassName)) {
-//            return byteCode;
-//        }
-//
-//        if (className.equals(finalTargetClassName)
-//                && loader.equals(targetClassLoader)) {
+
+        if (loader.equals(targetClassLoader)) {
 
             System.out.println("[Agent] Transforming class " + className);
             try {
@@ -55,7 +51,7 @@ public class jvmTransformer implements ClassFileTransformer {
                                 "InstrumentBinary binary_trampoline = new InstrumentBinary();" +
                                 "binary_trampoline.customFunction();" +
                                 "System.out.println('BANG BANG BANG');"
-                        );
+                );
 
                 StringBuilder endBlock = new StringBuilder();
 
@@ -80,6 +76,8 @@ public class jvmTransformer implements ClassFileTransformer {
                 System.out.println("Error in jvmTransformer");
             }
 
+            return byteCode;
+        }
         return byteCode;
     }
 }
