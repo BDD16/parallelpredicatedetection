@@ -42,8 +42,7 @@ public class jvmTransformer implements ClassFileTransformer {
 
         this.targetClassName = className;
         String finalTargetClassName = this.targetClassName.replaceAll("\\.", "/");
-
-        if (loader.equals(targetClassLoader)) {
+        System.out.println("[Transformer] POWER UP: " + finalTargetClassName);
 
             System.out.println("[Agent] Transforming class " + className);
             try {
@@ -83,8 +82,6 @@ public class jvmTransformer implements ClassFileTransformer {
                 System.out.println("Error in jvmTransformer");
             }
 
-            return byteCode;
-        }
         return byteCode;
     }
 }

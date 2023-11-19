@@ -1,20 +1,15 @@
 package com.utece.student.llpdetection.agents;
 
-import com.sun.tools.attach.AgentInitializationException;
-import com.sun.tools.attach.AgentLoadException;
 import com.sun.tools.attach.VirtualMachine;
 import com.utece.student.llpdetection.agentLoader.abstractAgent;
 import com.utece.student.llpdetection.transformers.jvmTransformer;
 
-import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 import java.security.ProtectionDomain;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class
 
@@ -106,7 +101,7 @@ JavaAgent extends abstractAgent {
     }
 
     public static void premain(
-            String agentArgs, Instrumentation inst) throws URISyntaxException, AgentLoadException, AgentInitializationException, IOException {
+            String agentArgs, Instrumentation inst) {
 
         System.out.println("[Agent] In premain method");
         System.out.println("agentArgs: " + agentArgs);
@@ -120,31 +115,54 @@ JavaAgent extends abstractAgent {
 
             Class[] classArray = inst.getAllLoadedClasses();
             //System.out.println(Arrays.toString(classArray));
-            Arrays.stream(new Object[]{Arrays.stream(classArray).collect(Collectors.toList())}).forEach(c -> {
-                Class<?> targetClass = null;
-                try {
-                    targetClass = Class.forName(c.getClass().getName());
-                } catch (ClassNotFoundException e) {
-                    System.out.println(c + " : cannot be transformed so skipping");
+            try {
+                inst.addTransformer(new jvmTransformer(), true);
+            }catch(Exception e){
+                System.out.println(e);
+                Throwable cause = e.getCause();
+                if (cause != null){
+                    cause.printStackTrace();
                 }
+            }
 
-                    try {
-                        transform(targetClass, ClassLoader.getSystemClassLoader(), inst);
-                        //c.getClass().getEnclosingClass().getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
-                    } catch(java.lang.ClassCastException e){
-                        System.out.println(className + " : cannot be transformed so skipping");
-                    }
-                    catch(java.lang.NullPointerException e){
-                        System.out.println("skipping a null return");
-                    }
-                    catch(java.lang.NoClassDefFoundError e){
-                        System.out.println("continue on!");
-                    }
-            });
+            for(Class class_n_day: classArray){
+                Class<?> targetClass = Class.forName(class_n_day.getClass().getName());
+                try {
+                        inst.retransformClasses(targetClass);
+                        System.out.println(targetClass.getName() + " hopefully transformed");
+                        //transform(targetClass, targetClass.getClassLoader(), inst);
+                    } catch (UnmodifiableClassException ex) {
+                    throw new RuntimeException(ex);
+                }
+                //c.getClass().getEnclosingClass().getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
+                }
+            } catch (ClassNotFoundException ex) {
+            System.out.println(ex);
+        }
+//            Arrays.stream(new Object[]{Arrays.stream(classArray).collect(Collectors.toList())}).forEach(c -> {
+//                Class<?> targetClass = null;
+//                try {
+//                    targetClass = Class.forName(c.getClass().getName());
+//                } catch (ClassNotFoundException e) {
+//                    System.out.println(c + " : cannot be transformed so skipping");
+//                }
+//
+//                    try {
+//                        if(!targetClass.getName().contains("javasist")) {
+//                            transform(targetClass, ClassLoader.getSystemClassLoader(), inst);
+//                        }
+//                        //c.getClass().getEnclosingClass().getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
+//                    } catch(java.lang.ClassCastException e){
+//                        System.out.println(className + " : cannot be transformed so skipping");
+//                    }
+//                    catch(java.lang.NullPointerException e){
+//                        System.out.println("skipping a null return");
+//                    }
+//                    catch(java.lang.NoClassDefFoundError e){
+//                        System.out.println("continue on!");
+//                    }
+//            });
 
-        }catch(Exception e){
-            System.out.println(e);
-            System.out.println("DANGER DANGER DANGER");
         }
 
 //        try{
@@ -168,10 +186,6 @@ JavaAgent extends abstractAgent {
 //                throw new RuntimeException(g);
 //            }
 //        }
-        System.out.println("This is the classname: " + className);
-
-    }
-
 
     }
 

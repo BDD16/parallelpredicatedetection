@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: Apache Maven 3.9.2
+Built-By: blake
+Build-Jdk: 20.0.2
+Agent-Class: com.utece.student.llpdetection.agents.JavaAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Premain-Class: com.utece.student.llpdetection.agents.JavaAgent
+Main-Class: com.utece.student.llpdetection.agents.Launcher
