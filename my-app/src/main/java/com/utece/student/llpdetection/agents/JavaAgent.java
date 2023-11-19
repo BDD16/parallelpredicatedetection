@@ -12,6 +12,7 @@ import java.lang.instrument.UnmodifiableClassException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
+import java.security.ProtectionDomain;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -75,23 +76,33 @@ JavaAgent extends abstractAgent {
             }
     }
 
-    public static void transform(
+    public static byte[] transform(
             Class<?> clazz,
             ClassLoader classLoader,
             Instrumentation instrumentation) {
-        if(clazz != null && classLoader !=null && clazz.getName().contains("parallelalgorithms.group9.homework3")) {
-
-                t = new jvmTransformer(
-                        clazz.getName(), classLoader);
-            instrumentation.addTransformer(t, true);
+        if(clazz != null && classLoader !=null) {
+                if(t ==null) {
+                    t = new jvmTransformer(
+                            clazz.getName(), classLoader);
+                }
+                else{
+                    t.setTargetClassName(clazz.getName());
+                }
+            instrumentation.addTransformer(t);
 
             System.out.println("retransforming class: " + clazz);
             try {
+                byte[] result = new byte[10000];
+                ProtectionDomain public_identity = clazz.getProtectionDomain();
+                result = t.getBytesFromTransform(classLoader, clazz.getName(), clazz,public_identity, result);
+                System.out.println(result);
                 instrumentation.retransformClasses(clazz);
+                return result;
             }catch(UnmodifiableClassException e){
                 System.out.println(e);
             }
         }
+        return null;
     }
 
     public static void premain(
@@ -108,14 +119,13 @@ JavaAgent extends abstractAgent {
             System.out.println(inst.isRetransformClassesSupported());
 
             Class[] classArray = inst.getAllLoadedClasses();
-            System.out.println(Arrays.toString(classArray));
+            //System.out.println(Arrays.toString(classArray));
             Arrays.stream(new Object[]{Arrays.stream(classArray).collect(Collectors.toList())}).forEach(c -> {
                 Class<?> targetClass = null;
                 try {
-                    targetClass = Class.forName(c.getClass().getName().toString());
+                    targetClass = Class.forName(c.getClass().getName());
                 } catch (ClassNotFoundException e) {
                     System.out.println(c + " : cannot be transformed so skipping");
-
                 }
 
                     try {
@@ -126,6 +136,9 @@ JavaAgent extends abstractAgent {
                     }
                     catch(java.lang.NullPointerException e){
                         System.out.println("skipping a null return");
+                    }
+                    catch(java.lang.NoClassDefFoundError e){
+                        System.out.println("continue on!");
                     }
             });
 

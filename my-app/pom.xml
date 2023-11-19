@@ -12,8 +12,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>19</maven.compiler.source>
-    <maven.compiler.target>19</maven.compiler.target>
+    <maven.compiler.source>20</maven.compiler.source>
+    <maven.compiler.target>20</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>org.javassist</groupId>
       <artifactId>javassist</artifactId>
-      <version>3.21.0-GA</version>
+      <version>3.27.0-GA</version>
     </dependency>
 
   </dependencies>
@@ -120,9 +120,15 @@
         <version>1.2.1</version>
         <executions>
           <execution>
+            <phase>package</phase>
             <goals>
-              <goal>java</goal>
+              <goal>single</goal>
             </goals>
+            <configuration>
+              <descriptorRefs>
+                <descriptorRef>javassist</descriptorRef>
+              </descriptorRefs>
+            </configuration>
           </execution>
         </executions>
           <configuration>

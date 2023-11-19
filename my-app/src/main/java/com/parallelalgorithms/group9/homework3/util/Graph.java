@@ -8,7 +8,7 @@ import java.util.*;
  *
  * Graph.java
  */
-public class Graph implements com.parallelalgorithms.group9.homework3.util.GraphInterface {
+public class Graph implements parallelalgorithms.group9.homework3.util.GraphInterface {
     private int numNodes; // number of nodes in the graph
     public List<Integer>[] adjacencyList; //helper list
 
@@ -189,8 +189,7 @@ public class Graph implements com.parallelalgorithms.group9.homework3.util.Graph
     }
 
     public List<Integer> setToArray(Set<Integer> set){
-        List<Integer> setArray = set.stream().toList();
-        return setArray;
+        return new ArrayList<>(set);
     }
 
     public int maxValue(Set<Integer> set){

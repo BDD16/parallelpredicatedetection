@@ -3,6 +3,9 @@ package com.utece.student.llpdetection.instrumentation;
 import com.sun.jdi.Bootstrap;
 import com.sun.jdi.connect.Connector.Argument;
 import com.sun.jdi.connect.LaunchingConnector;
+import com.sun.jna.Library;
+import com.sun.tools.attach.AgentInitializationException;
+import com.sun.tools.attach.AgentLoadException;
 import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
 import com.utece.student.llpdetection.transformers.jvmTransformer;
@@ -15,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class DynamicDebuggerWithProcessAttachAndPID {
     jvmTransformer x;
-    public static void main(String[] args) throws IOException, AttachNotSupportedException {
+    public static void main(String[] args) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
 //        if (args.length < 2) {
 //            System.out.println("Usage: DynamicDebuggerWithProcessAttachAndPID <processId> <className>");
 //            System.exit(1);
@@ -31,12 +34,13 @@ public class DynamicDebuggerWithProcessAttachAndPID {
         }
     }
 
-    public static com.sun.tools.attach.VirtualMachine launchAndConnect(String mainClassName) throws IOException, AttachNotSupportedException {
+    public static com.sun.tools.attach.VirtualMachine launchAndConnect(String mainClassName) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
 
         String jvmName = ManagementFactory.getRuntimeMXBean().getName();
         String jvmPid = jvmName.substring(0, jvmName.indexOf('@'));
-
+        System.out.println(jvmPid);
         VirtualMachine self = VirtualMachine.attach(jvmPid);
+        self.loadAgent("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar");
 
         if(self != null) {
             return self;
@@ -89,11 +93,12 @@ public class DynamicDebuggerWithProcessAttachAndPID {
 //    }
 
     private static String getUnixProcessId() {
-        return CLibrary.INSTANCE.getpid() + "";
+        return  new String(String.valueOf(CLibrary.INSTANCE.getpid())) + "";
+
     }
 
     // Interface for JNA to access getpid on Unix
-    private interface CLibrary extends com.sun.jna.Library {
+    private interface CLibrary extends Library {
         CLibrary INSTANCE = com.sun.jna.Native.load("c", CLibrary.class);
 
         int getpid();

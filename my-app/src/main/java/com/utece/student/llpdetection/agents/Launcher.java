@@ -41,7 +41,8 @@ public class Launcher {
             String targetClassName = "parallelalgorithms.group9.homework3.ParallelRunners";
 
             com.sun.tools.attach.VirtualMachine vm = launchAndConnect(targetClassName);
-            vm.loadAgent("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar");
+            assert vm != null;
+            //vm.loadAgent("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar", null);
             // start management agent
             // detach
             vm.detach();

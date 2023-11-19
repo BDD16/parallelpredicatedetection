@@ -3,7 +3,7 @@ package parallelalgorithms.group9.homework3.api;
 import parallelalgorithms.group9.homework3.llp.boruvka.Boruvka;
 import parallelalgorithms.group9.homework3.llp.boruvka.Edge;
 import parallelalgorithms.group9.homework3.llp.toposort.TopoSortGraph;
-import com.parallelalgorithms.group9.homework3.util.GraphInterface;
+import parallelalgorithms.group9.homework3.util.GraphInterface;
 
 import java.util.ArrayList;
 import java.util.List;

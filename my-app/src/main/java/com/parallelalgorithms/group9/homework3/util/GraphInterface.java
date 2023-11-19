@@ -1,9 +1,10 @@
-package com.parallelalgorithms.group9.homework3.util;
+package parallelalgorithms.group9.homework3.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public interface GraphInterface{
     static int numNodes = 0; // number of nodes in the graph@
@@ -121,7 +122,7 @@ public interface GraphInterface{
     }
 
     public default List<Integer> setToArray(Set<Integer> set){
-        List<Integer> setArray = set.stream().toList();
+        List<Integer> setArray = set.stream().collect(Collectors.toList());
         return setArray;
     }
 

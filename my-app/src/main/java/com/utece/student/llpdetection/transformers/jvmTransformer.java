@@ -11,10 +11,17 @@ public class jvmTransformer implements ClassFileTransformer {
     public String targetClassName;
 
     public jvmTransformer(String name, ClassLoader classLoader) {
-        super();
         targetClassName = name;
         targetClassLoader = classLoader;
 
+    }
+
+    public jvmTransformer() {
+
+    }
+
+    public void setTargetClassName(String given){
+        targetClassName = given;
     }
 
     public byte[] getBytesFromTransform(ClassLoader loader,
