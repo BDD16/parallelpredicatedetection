@@ -5,6 +5,8 @@ import javassist.*;
 import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
+import java.util.Arrays;
+
 public class jvmTransformer implements ClassFileTransformer {
 
     ClassLoader targetClassLoader = null;
@@ -29,7 +31,7 @@ public class jvmTransformer implements ClassFileTransformer {
                                         Class<?> classBeingRedefined,
                                         ProtectionDomain protectionDomain,
                                         byte[] classfileBuffer){
-        return transform(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
+        return this.transform(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
     }
     @Override
     public byte[] transform(
@@ -43,45 +45,74 @@ public class jvmTransformer implements ClassFileTransformer {
         this.targetClassName = className;
         String finalTargetClassName = this.targetClassName.replaceAll("\\.", "/");
         System.out.println("[Transformer] POWER UP: " + finalTargetClassName);
+        if(className.contains("java.lang.Class")){
+            try{
+            ClassPool cp = ClassPool.getDefault();
+            CtClass cc = cp.get(finalTargetClassName);
+
+                return cc.toBytecode();
+            } catch (IOException | CannotCompileException | NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
 
             System.out.println("[Agent] Transforming class " + className);
             try {
                 ClassPool cp = ClassPool.getDefault();
                 CtClass cc = cp.get(finalTargetClassName);
-                CtMethod m = cc.getDeclaredMethod(
-                        "main");
-                m.addLocalVariable(
-                        "startTime", CtClass.longType);
-                m.insertBefore(
-                        "startTime = System.currentTimeMillis();" +
-                                "InstrumentBinary binary_trampoline = new InstrumentBinary();" +
-                                "binary_trampoline.customFunction();" +
-                                "System.out.println('BANG BANG BANG');"
-                );
+                // CtMethod[] m_list = cc.getMethods();
+                try {
+                    CtMethod m = cc.getDeclaredMethod("runBoruvkaMST");
+                    // System.out.println(Arrays.toString(m_list));
 
-                StringBuilder endBlock = new StringBuilder();
+                    //for(CtMethod m : m_list ) {
+                    m.addLocalVariable(
+                            "startTime", CtClass.longType);
+                    //m.addLocalVariable("binary_trampoline", CtClass.);
+                    ;
+                    m.insertBefore(
+                            "System.out.println(\"[Application] BANG BANG BANG:\");"
+                    );
 
-                m.addLocalVariable("endTime", CtClass.longType);
-                m.addLocalVariable("opTime", CtClass.longType);
-                endBlock.append(
-                        "endTime = System.currentTimeMillis();");
-                endBlock.append(
-                        "opTime = (endTime-startTime)/1000;");
+                    StringBuilder endBlock = new StringBuilder();
 
-                endBlock.append(
-                        "LOGGER.info(\"[Application] Withdrawal operation completed in:" +
-                                "\" + opTime + \" seconds!\");");
-                endBlock.append("binary_trampoline.customFunction();");
+                    m.addLocalVariable("endTime", CtClass.longType);
+                    m.addLocalVariable("opTime", CtClass.longType);
+                    endBlock.append(
+                            "endTime = System.currentTimeMillis();");
+                    endBlock.append(
+                            "opTime = (endTime-startTime)/1000;");
 
-                m.insertAfter(endBlock.toString());
+                    endBlock.append(
+                            "System.out.println(\"[Application] Withdrawal operation completed in:" +
+                                    "\" + opTime + \" seconds!\");");
+                    //endBlock.append("binary_trampoline.customFunction();");
 
-                byteCode = cc.toBytecode();
-                cc.detach();
+                    m.insertAfter(endBlock.toString());
+                    System.out.println(Arrays.toString(cc.toBytecode()));
+                    //cc.writeFile();
+
+
+                    // }
+                    byteCode = cc.toBytecode();
+                    cc.writeFile();
+                    System.out.println(Arrays.toString(byteCode));
+                    cc.detach();
+                } catch (Exception e) {
+                    byteCode = cc.toBytecode();
+                    cc.detach();
+                    System.out.println("MUY MAL");
+                    return byteCode;
+                }
+
             } catch (NotFoundException | CannotCompileException | IOException e) {
                 System.out.println("Exception" + e);
                 System.out.println("Error in jvmTransformer");
             }
-
-        return byteCode;
+            System.out.println("[TRANSFORM] completed byte code is below");
+            System.out.println(Arrays.toString(byteCode));
+            return byteCode;
+        }
     }
 }

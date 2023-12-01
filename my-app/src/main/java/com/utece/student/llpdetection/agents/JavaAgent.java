@@ -7,9 +7,7 @@ import com.utece.student.llpdetection.transformers.jvmTransformer;
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
 import java.lang.management.ManagementFactory;
-import java.lang.reflect.InvocationTargetException;
 import java.security.ProtectionDomain;
-import java.util.Arrays;
 
 public class
 
@@ -37,33 +35,50 @@ JavaAgent extends abstractAgent {
 
     public static void agentmain(String agentArgs, Instrumentation inst) {
             try {
+                //premain(agentArgs, inst);
                 System.out.println("[Agent] In agentmain method");
                 String className = "parallelalgorithms.group9.homework3.ParallelRunners";
-                com.utece.student.llpdetection.transformers.Transformer.transform(parallelalgorithms.group9.homework3.ParallelRunners.class.getComponentType(), inst.getClass().getClassLoader(), inst);
+                //com.utece.student.llpdetection.transformers.Transformer.transform(parallelalgorithms.group9.homework3.ParallelRunners.class.getComponentType(), inst.getClass().getClassLoader(), inst);
                 System.out.println(inst.isRetransformClassesSupported());
-
+                java.util.ArrayList<Class> targetedInstrumentation = new java.util.ArrayList<Class>() ;
                 Class[] classArray = inst.getAllLoadedClasses();
-
-                Arrays.stream(classArray).forEach(c -> {
-                    Class<?> targetClass = null;
-                    try {
-                        targetClass = inst.getClass().forName(className);
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
+                for(Class clazz: classArray){
+                    if(clazz.getName().equals("parallelalgorithms.group9.homework3.ParallelRunners")){
+                        System.out.println("Instrumenting Class: " + clazz.getName());
+                        targetedInstrumentation.add(clazz);
                     }
-                    if( c == targetClass){
+                }
+                Class[] edited = new Class[targetedInstrumentation.size()];
+                for(int i = 0; i < targetedInstrumentation.size(); i ++){
+                    edited[i] = targetedInstrumentation.get(i);
+                }
+                System.out.println(edited);
+                inst.addTransformer(new jvmTransformer());
+                inst.retransformClasses(edited);
+                //Class<?> targetClass = inst.getClass().forName(className);
+                inst.getAllLoadedClasses().getClass().forName(className).getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
 
-                        try {
-                            c.getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
-                        } catch (IllegalAccessException e) {
-                            throw new RuntimeException(e);
-                        } catch (InvocationTargetException e) {
-                            throw new RuntimeException(e);
-                        } catch (NoSuchMethodException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
+//                Arrays.stream(classArray).forEach(c -> {
+//                    Class<?> targetClass = null;
+//                    try {
+//
+//                        targetClass = inst.getClass().forName(className);
+//                    } catch (ClassNotFoundException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    if( c == targetClass){
+//
+//                        try {
+//                            c.getDeclaredMethod("main", String[].class).invoke(null, (Object) new String[]{});
+//                        } catch (IllegalAccessException e) {
+//                            throw new RuntimeException(e);
+//                        } catch (InvocationTargetException e) {
+//                            throw new RuntimeException(e);
+//                        } catch (NoSuchMethodException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//                });
 
             }catch(Exception e){
                 System.out.println(e);
@@ -91,7 +106,9 @@ JavaAgent extends abstractAgent {
                 ProtectionDomain public_identity = clazz.getProtectionDomain();
                 result = t.getBytesFromTransform(classLoader, clazz.getName(), clazz,public_identity, result);
                 System.out.println(result);
+                System.out.println("[TRANSFORM] LETS ROCK!");
                 instrumentation.retransformClasses(clazz);
+                System.out.println("[TRANSFORM] Done Retransforming Classes of clazz: " + clazz.toString());
                 return result;
             }catch(UnmodifiableClassException e){
                 System.out.println(e);
@@ -130,7 +147,7 @@ JavaAgent extends abstractAgent {
                 try {
                         inst.retransformClasses(targetClass);
                         System.out.println(targetClass.getName() + " hopefully transformed");
-                        //transform(targetClass, targetClass.getClassLoader(), inst);
+                        transform(targetClass, targetClass.getClassLoader(), inst);
                     } catch (UnmodifiableClassException ex) {
                     throw new RuntimeException(ex);
                 }

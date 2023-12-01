@@ -8,3 +8,15 @@ Can-Set-Native-Method-Prefix: true
 Boot-Class-Path: /Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar
 
 Main-Class: parallelalgorithms.group9.homework3.ParallelRunners
+
+//working manifest below
+Manifest-Version: 1.0
+Created-By: Apache Maven 3.9.2
+Built-By: blake
+Build-Jdk: 20.0.2
+Agent-Class: com.utece.student.llpdetection.agents.JavaAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Premain-Class: com.utece.student.llpdetection.agents.JavaAgent
+Can-Set-Native-Method-Prefix: true
+Boot-Class-Path: /Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/my-app-debugger-1.0-SNAPSHOT.jar

@@ -2,9 +2,9 @@ package parallelalgorithms.group9.homework3.api;
 
 public class groupNine {
 
-    public api api_obj;
+    public parallelalgorithms.group9.homework3.api.api api_obj;
 
     public groupNine(){
-        api_obj = new api();
+        api_obj = new parallelalgorithms.group9.homework3.api.api();
     }
 }

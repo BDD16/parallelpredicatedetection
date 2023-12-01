@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class DynamicDebuggerWithProcessAttachAndPID {
     jvmTransformer x;
-    public static void main(String[] args) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
+    public static void main(String[] args) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException, InterruptedException {
 //        if (args.length < 2) {
 //            System.out.println("Usage: DynamicDebuggerWithProcessAttachAndPID <processId> <className>");
 //            System.exit(1);
@@ -34,7 +34,7 @@ public class DynamicDebuggerWithProcessAttachAndPID {
         }
     }
 
-    public static com.sun.tools.attach.VirtualMachine launchAndConnect(String mainClassName) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException {
+    public static com.sun.tools.attach.VirtualMachine launchAndConnect(String mainClassName) throws IOException, AttachNotSupportedException, AgentLoadException, AgentInitializationException, InterruptedException {
 
         String jvmName = ManagementFactory.getRuntimeMXBean().getName();
         String jvmPid = jvmName.substring(0, jvmName.indexOf('@'));
@@ -43,6 +43,7 @@ public class DynamicDebuggerWithProcessAttachAndPID {
         self.loadAgent("/Users/blake/Documents/UT_Masters/Parallel_Algorithms/parallel_algorithms/term_project/parallelpredicatedetection/my-app/target/javaAgentLauncher-1.0-SNAPSHOT.jar");
 
         if(self != null) {
+            System.out.println(self.getSystemProperties());
             return self;
         }
         return null;
